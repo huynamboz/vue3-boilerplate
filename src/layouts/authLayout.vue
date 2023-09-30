@@ -1,12 +1,12 @@
 <template>
-  <div class="flex min-h-screen">
+  <div v-if="authStore.isLoggedIn" class="flex min-h-screen">
     <div class="flex flex-col flex-grow bg-[#f4f6f9]">
       <the-header />
 
-      <div class="mb-auto flex">
+      <div class="mb-auto flex max-[400px]:flex-col">
         <the-sidebar />
-        <div class="w-full pt-[72px]">
-          <router-view :key="$router.fullPath" />
+        <div class="w-full pt-[72px] max-[400px]:pt-[200px]">
+          <slot></slot>
         </div>
       </div>
 
@@ -15,16 +15,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import TheSidebar from '@/components/layouts/TheSidebar.vue'
 import TheHeader from '@/components/layouts/TheHeader.vue'
 import TheFooter from '@/components/layouts/TheFooter.vue'
-
-export default {
-  components: {
-    TheSidebar,
-    TheHeader,
-    TheFooter,
-  },
-}
+import { authStore } from '@/stores/auth.store'
 </script>

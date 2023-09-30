@@ -2,6 +2,7 @@ import router from '.'
 import { authStore } from '@/stores/auth.store'
 export const authMiddleware = () => {
   router.beforeEach((to, from, next) => {
+    console.log('beforeEach', to, from)
     const isLoggedIn = localStorage.getItem('access_token')
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (!isLoggedIn) {
@@ -21,8 +22,5 @@ export const authMiddleware = () => {
       }
     }
     next()
-  })
-  router.afterEach((to, from) => {
-    console.log('afterEach', to, from)
   })
 }

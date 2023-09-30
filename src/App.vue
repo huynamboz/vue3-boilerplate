@@ -1,15 +1,10 @@
 <script setup>
-import { RouterView, useRoute } from 'vue-router'
 import { computed } from 'vue'
-import authLayout from '@/layouts/authLayout.vue'
-import emptyLayout from '@/layouts/emptyLayout.vue'
+import { RouterView, useRoute } from 'vue-router'
+const route = useRoute()
 const layout = computed(() => {
-  switch (useRoute().meta.layout) {
-    case 'empty':
-      return emptyLayout
-    default:
-      return authLayout
-  }
+  console.log(route)
+  return (route.meta.layout || 'default') + '-layout'
 })
 </script>
 <template>
@@ -17,6 +12,7 @@ const layout = computed(() => {
   <component :is="layout">
     <router-view />
   </component>
+  <!-- nếu ở đây có gì thay đổi thì router view sẽ bị rerender dẫn đến component hiện tại bị render lại -->
 </template>
 
 <style scoped>

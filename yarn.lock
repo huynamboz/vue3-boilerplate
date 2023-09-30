@@ -1649,6 +1649,11 @@ vue3-apexcharts@^1.4.1:
   resolved "https://registry.yarnpkg.com/vue3-apexcharts/-/vue3-apexcharts-1.4.4.tgz#3fd5f97a79dd323d37c996a44617bb2ec9978152"
   integrity sha512-TH89uZrxGjaDvkaYAISvj8+k6Bf1rUKFillc8oJirs5XZEPiwM1ELKZQ786wz0rfPqkSHHny2lqqUCK7Rw+LcQ==
 
+vue3-google-login@^2.0.23:
+  version "2.0.23"
+  resolved "https://registry.yarnpkg.com/vue3-google-login/-/vue3-google-login-2.0.23.tgz#072864807f54bd883acfd3976329bdcdd7ca3f0b"
+  integrity sha512-kYn8UFJOGw+cv1lQqj4mYaDMCDmLDKxEVjFdoiS+en4BQhf0cqpaYTUxbdcHPxqATnZmuJmHsebuBbR93ktVpA==
+
 vue@^3.2.47:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"

@@ -1,6 +1,7 @@
 <template>
   <div class="px-5 py-5">
-    <div class="bg-white rounded-[10px] p-2">
+    <p class="font-bold text-xl">Tài khoản</p>
+    <div class="bg-white rounded-[10px] p-2 mt-5">
       <table>
         <tr>
           <th>ID</th>
@@ -35,6 +36,7 @@ onBeforeMount(() => {
 })
 const fetchUsers = async () => {
   try {
+    console.log('fetching users')
     await getUsersApi().then((res) => {
       users.value = res['data']['data']
     })

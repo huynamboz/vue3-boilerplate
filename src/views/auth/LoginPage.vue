@@ -3,9 +3,10 @@
     <div class="max-w-md w-full">
       <h2 class="text-center text-2xl font-bold text-gray-800 mb-6">Sign in to your dashboard</h2>
 
-      <div>
+      <div class="flex justify-center">
+        <div ref="googleLoginBtn" class=""></div>
         <button
-          class="w-full flex justify-center py-3 px-4 border border-gray-300 font-medium rounded-md text-gray-900 bg-white focus:outline-none"
+          class="hidden w-full justify-center py-3 px-4 border border-gray-300 font-medium rounded-md text-gray-900 bg-white focus:outline-none"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="h-6 w-6 mr-2">
             <g>
@@ -128,19 +129,52 @@
         <a href="/register" class="font-medium text-indigo-600 hover:text-indigo-500">Tạo tài khoản</a>
       </div>
     </div>
+    <!-- <div ref="googleLoginBtn" /> -->
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { initAuthStore } from '@/stores/auth.store'
-import { login } from '@/services/auth.service'
+import { login, loginGGApi } from '@/services/auth.service'
 import { useNotification } from '@kyvg/vue3-notification'
 const notification = useNotification()
 const router = useRouter()
 const email = ref('')
 const password = ref('')
+const googleLoginBtn = ref()
+onMounted(() => {
+  console.log('onBeforeMount')
+  const gClientId = '539910609167-67i01tcoja47s71qshaeodhcc69d5u99.apps.googleusercontent.com'
+  window.google.accounts.id.initialize({
+    client_id: gClientId,
+    scope: 'email profile openid',
+    callback: handleCredentialResponse,
+    auto_select: true,
+  })
+  window.google.accounts.id.renderButton(googleLoginBtn.value, { theme: 'outline', size: 'large', width: '400' })
+  window.google.accounts.id.prompt()
+})
+
+const handleCredentialResponse = async (res) => {
+  try {
+    await loginGGApi({ credential: res.credential }).then((res) => {
+      const data = res['data']
+      localStorage.setItem('access_token', data.tokens.access.token)
+      localStorage.setItem('refresh_token', data.tokens.refresh.token)
+    })
+    await initAuthStore()
+    router.push('/')
+  } catch (error) {
+    notification.notify({
+      type: 'error',
+      title: 'Đăng nhập thất bại, vui lòng kiểm tra lại thông tin đăng nhập',
+      text: error.response.data.message,
+    })
+  }
+}
+
 const submit = async () => {
   try {
     await login({ email: email.value, password: password.value }).then((res) => {

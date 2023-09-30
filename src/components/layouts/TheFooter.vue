@@ -5,7 +5,7 @@
       <a href="#" class="font-bold hover:text-indigo-600">FAQ</a>
       <a href="#" class="font-bold hover:text-indigo-600">Support</a>
     </div>
-    <div>&copy; {{ new Date().getFullYear() }} Tailmin</div>
+    <div>&copy; {{ new Date().getFullYear() }} Unlockscan</div>
   </footer>
 </template>
 

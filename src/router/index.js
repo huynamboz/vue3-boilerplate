@@ -17,7 +17,7 @@ const routes = [
     path: '/login',
     name: 'login',
     meta: { layout: 'empty' },
-    component: () => import('@/views/LoginPage.vue'),
+    component: () => import('@/views/auth/LoginPage.vue'),
   },
   {
     path: '/register',
@@ -28,9 +28,6 @@ const routes = [
 ]
 const router = createRouter({
   history: createWebHistory(),
-  scrollBehavior() {
-    return { top: 0 }
-  },
   routes,
 })
 

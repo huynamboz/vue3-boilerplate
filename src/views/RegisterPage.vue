@@ -192,18 +192,23 @@ const submit = async () => {
       })
       return
     }
-    await registerApi({ name: name.value.trim(), email: email.value.trim(), password: password.value.trim() })
-      .then((res) => {
+    await registerApi({ name: name.value.trim(), email: email.value.trim(), password: password.value.trim() }).then(
+      (res) => {
         const data = res['data']
         localStorage.setItem('access_token', data.tokens.access.token)
         localStorage.setItem('refresh_token', data.tokens.refresh.token)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+      }
+    )
     await initAuthStore()
     router.push('/users')
   } catch (error) {
+    if (error.response?.data?.message) {
+      notification.notify({
+        type: 'error',
+        title: 'Đăng ký thất bại',
+        text: error.response.data.message,
+      })
+    }
     console.log(error)
   }
 }
