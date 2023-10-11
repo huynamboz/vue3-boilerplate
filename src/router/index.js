@@ -14,6 +14,12 @@ const routes = [
     component: () => import('@/views/UserList.vue'),
   },
   {
+    path: '/settings',
+    name: 'settings',
+    meta: { requiresAuth: true },
+    component: () => import('@/views/ProfileView.vue'),
+  },
+  {
     path: '/login',
     name: 'login',
     meta: { layout: 'empty' },

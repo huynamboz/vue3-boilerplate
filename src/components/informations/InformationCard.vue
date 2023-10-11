@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col bg-white h-[200px] w-[200px] rounded-md p-5">
+  <div class="flex flex-col bg-white box-shadow-custom h-[200px] w-[200px] rounded-2xl p-5">
     <div class="flex flex-col gap-3">
       <p>Tên: {{ information.name }}</p>
       <p>Giới tính: {{ information.gender }}</p>
@@ -15,7 +15,7 @@
   </div>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
   information: Object,
 })
 </script>

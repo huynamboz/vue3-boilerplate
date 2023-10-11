@@ -1,9 +1,9 @@
 <template>
   <div v-if="authStore.isLoggedIn" class="flex min-h-screen">
-    <div class="flex flex-col flex-grow bg-[#f4f6f9]">
+    <div class="flex flex-col flex-grow bg-[var(--bg-pri)]">
       <the-header />
 
-      <div class="mb-auto flex max-[400px]:flex-col">
+      <div class="mb-auto flex">
         <the-sidebar />
         <div class="w-full pt-[72px] max-[400px]:pt-[200px]">
           <slot></slot>

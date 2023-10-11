@@ -1,21 +1,52 @@
 <template>
   <div class="px-5 py-5">
     <p class="font-bold text-xl">Tài khoản</p>
-    <div class="bg-white rounded-[10px] p-2 mt-5">
-      <table>
+    <div class="box-shadow-custom bg-white rounded-[20px] p-4 mt-5">
+      <h1 class="text-lg font-semibold ml-5">Người dùng hệ thống</h1>
+      <table class="mt-5">
         <tr>
-          <th>ID</th>
           <th>TÊN</th>
-          <th>EMAIL</th>
+          <th>ĐĂNG KÝ</th>
+          <th>NGÀY ĐĂNG KÝ</th>
           <th>ROLE</th>
           <th>SỐ DƯ</th>
+          <th>HÀNH ĐỘNG</th>
         </tr>
         <tr v-for="user in users" :key="user.id" @click="userChoosed = user">
-          <td>{{ user.id }}</td>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.role }}</td>
-          <td>{{ user.balance }}</td>
+          <td>
+            <div class="flex gap-2">
+              <img v-if="user.avatar" class="w-10 h-10 rounded-xl object-cover" :src="user.avatar" alt="avatar" />
+              <img
+                v-else
+                class="w-10 h-10 rounded-xl object-cover"
+                src="https://demos.creative-tim.com/soft-ui-dashboard-tailwind/assets/img/team-2.jpg"
+                alt=""
+              />
+              <div class="flex flex-col">
+                <p>{{ user.name }}</p>
+                <p>{{ user.email }}</p>
+              </div>
+            </div>
+          </td>
+          <td>{{ user.provider }}</td>
+          <td>{{ user.createdAt }}</td>
+          <td>
+            <div
+              :class="{
+                'bg-[#14c661] text-white text-center rounded-md': user.role == 'ADMIN',
+                'bg-[#47bafd] text-white text-center rounded-md': user.role == 'USER',
+              }"
+            >
+              {{ user.role }}
+            </div>
+          </td>
+          <td>{{ user.balance }}đ</td>
+          <td>
+            <div class="flex gap-2 font-semibold">
+              <p class="text-[#00b14d]" @click.stop="">Xóa</p>
+              <p class="text-[#fc5144]" @click.stop="">Sửa</p>
+            </div>
+          </td>
         </tr>
       </table>
     </div>
@@ -27,10 +58,11 @@ import { ref, onBeforeMount } from 'vue'
 import PopupDetailUser from '@/components/Users/PopupDetailUser.vue'
 import { getUsersApi, updateUserApi } from '@/services/user.service'
 import { useNotification } from '@kyvg/vue3-notification'
-
+import vuePagination from '@/components/commons/vuePagination.vue'
 const notification = useNotification()
 
 const users = ref([])
+const meta = ref(null)
 onBeforeMount(() => {
   fetchUsers()
 })
@@ -39,6 +71,7 @@ const fetchUsers = async () => {
     console.log('fetching users')
     await getUsersApi().then((res) => {
       users.value = res['data']['data']
+      meta.value = res['data']['meta']
     })
   } catch (error) {
     console.log(error)
@@ -57,6 +90,11 @@ const updateUser = async (user) => {
   })
     .then((res) => {
       users.value[index] = res['data']
+      notification.notify({
+        type: 'success',
+        title: 'Cập nhật thông tin thành công',
+        text: 'Cập nhật thông tin thành công',
+      })
     })
     .catch((error) => {
       if (error.code == 'ERR_BAD_REQUEST') {
@@ -83,7 +121,11 @@ td {
 th {
   text-align: left;
   padding: 10px 8px;
-  font-weight: 500;
+  font-weight: 600;
+  color: rgb(131 146 171);
+}
+td {
+  border-bottom: 0.5px solid #f2f3f4;
 }
 td:nth-child(1),
 th:nth-child(1) {

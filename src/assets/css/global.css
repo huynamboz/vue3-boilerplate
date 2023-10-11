@@ -1,4 +1,47 @@
+:root {
+  --bg-pri: #f8f9fa;
+  --tw-gradient-from: #7928ca;
+  --tw-gradient-to: #ff0080;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --bg-gra: linear-gradient(to top left, var(--tw-gradient-stops));
+  --tw-shadow: 0 20px 27px 0 rgba(0,0,0,0.05);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 body {
 	font-size: .875rem;
 	font-weight: 400;
+  color: #344767;
+}
+.fadeIn {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+.bg-gradient {
+  background: var(--bg-gra);
+}
+
+.background-active {
+  background: var(--bg-gra);
+  font-weight: 500;
+}
+
+.background-active p {
+  font-weight: 500;
+}
+.background-active svg {
+  fill: #fff;
+}
+
+.box-shadow-custom {
+  box-shadow: var(--box-shadow);
 }

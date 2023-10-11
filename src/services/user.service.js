@@ -1,6 +1,6 @@
 import axiosApiInstance from '@/plugins/api'
 export const getUsersApi = async () => {
-  return await axiosApiInstance.get('/users?limit=20')
+  return await axiosApiInstance.get('/users?limit=100')
 }
 export const updateUserApi = async (id, data) => {
   delete data.id
@@ -13,7 +13,7 @@ export const changeBalance = async (userID, balance) => {
 }
 
 export const getListInformationsApi = async () => {
-  return await axiosApiInstance.get('/informations')
+  return await axiosApiInstance.get('/informations?limit=100')
 }
 
 export const sendInformationApi = async (data) => {

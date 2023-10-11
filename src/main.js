@@ -17,6 +17,8 @@ const initApp = async () => {
   app.component('default-layout', authLayout)
   app.component('empty-layout', emptyLayout)
   app.use(Notifications)
-  app.mount('#app')
+  router.isReady().then(() => {
+    app.mount('#app')
+  })
 }
 initApp()
