@@ -9,7 +9,7 @@
       <h1 class="text-xl font-bold">Unlockscan</h1>
     </router-link>
     <div v-if="authStore.user" class="flex items-center gap-5 relative">
-      <p>Số dư: {{ authStore.user.balance }}</p>
+      <p>Số dư: {{ formatPrice(authStore.user.balance) }}</p>
       <p>Hello, {{ authStore.user.name }}</p>
       <img
         v-if="!authStore.user.avatar"
@@ -41,12 +41,14 @@
   <PopupEditUsers v-if="isEditPopupVisible" :user="isEditPopupVisible" @close="exitPopupEdit" />
 </template>
 <script setup>
-import { ref, onBeforeMount } from 'vue'
+import { ref } from 'vue'
 import { authStore } from '@/stores/auth.store'
 import PopupEditUsers from '../Users/PopupEditUsers.vue'
+import { formatPrice } from '@/utils/formatPrice'
+
 const isPopupVisible = ref(false)
 const isEditPopupVisible = ref(false)
-const emits = defineEmits(['close'])
+defineEmits(['close'])
 
 const togglePopup = () => {
   console.log('togglePopup')

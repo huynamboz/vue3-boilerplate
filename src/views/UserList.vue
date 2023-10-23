@@ -10,9 +10,9 @@
           <th>NGÀY ĐĂNG KÝ</th>
           <th>ROLE</th>
           <th>SỐ DƯ</th>
-          <th>HÀNH ĐỘNG</th>
+          <th class="max-w-[100px] w-[100px]">HÀNH ĐỘNG</th>
         </tr>
-        <tr v-for="user in users" :key="user.id" @click="userChoosed = user">
+        <tr v-for="user in users" :key="user.id" @click="openDetailUser(user)">
           <td>
             <div class="flex gap-2">
               <img v-if="user.avatar" class="w-10 h-10 rounded-xl object-cover" :src="user.avatar" alt="avatar" />
@@ -40,25 +40,41 @@
               {{ user.role }}
             </div>
           </td>
-          <td>{{ user.balance }}đ</td>
+          <td>
+            <div class="flex gap-2">
+              <p>{{ formatPrice(user.balance) }}</p>
+              <p class="text-[#fc5144]" @click.stop="openChangeBalance(user)">Nạp tiền</p>
+            </div>
+          </td>
           <td>
             <div class="flex gap-2 font-semibold">
               <p class="text-[#00b14d]" @click.stop="">Xóa</p>
-              <p class="text-[#fc5144]" @click.stop="">Sửa</p>
             </div>
           </td>
         </tr>
       </table>
     </div>
   </div>
-  <PopupDetailUser v-if="userChoosed" :user="userChoosed" @close="closePopupDetailUser" @updateUser="updateUser" />
+  <PopupDetailUser
+    v-if="modal.PopupDetail"
+    :user="userChoosed"
+    @close="closePopupDetailUser"
+    @updateUser="updateUser"
+  />
+  <PopupNapTien
+    v-if="modal.PopupChangeBalance"
+    :user="userChoosed"
+    @update="updateUserBalance"
+    @close="closeChangeBalance"
+  />
 </template>
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import PopupDetailUser from '@/components/Users/PopupDetailUser.vue'
 import { getUsersApi, updateUserApi } from '@/services/user.service'
 import { useNotification } from '@kyvg/vue3-notification'
-import vuePagination from '@/components/commons/vuePagination.vue'
+import PopupNapTien from '@/components/UI/Card/PopupNapTien.vue'
+import { formatPrice } from '@/utils/formatPrice'
 const notification = useNotification()
 
 const users = ref([])
@@ -66,6 +82,29 @@ const meta = ref(null)
 onBeforeMount(() => {
   fetchUsers()
 })
+
+const modal = ref({
+  PopupDetail: false,
+  PopupChangeBalance: false,
+})
+
+const updateUserBalance = (user) => {
+  const index = users.value.findIndex((i) => i.id == user.id)
+  console.log(index, user)
+  if (index != -1) {
+    users.value[index].balance = user.balance
+  }
+  userChoosed.value = null
+  modal.value.PopupChangeBalance = false
+}
+const closeChangeBalance = () => {
+  modal.value.PopupChangeBalance = false
+  userChoosed.value = null
+}
+const openChangeBalance = (user) => {
+  modal.value.PopupChangeBalance = true
+  userChoosed.value = user
+}
 const fetchUsers = async () => {
   try {
     console.log('fetching users')
@@ -77,9 +116,15 @@ const fetchUsers = async () => {
     console.log(error)
   }
 }
+
+const openDetailUser = (user) => {
+  userChoosed.value = user
+  modal.value.PopupDetail = true
+}
 const userChoosed = ref(null)
 const closePopupDetailUser = () => {
   userChoosed.value = null
+  modal.value.PopupDetail = false
 }
 const updateUser = async (user) => {
   const index = users.value.findIndex((item) => item.id === user.id)
