@@ -17,14 +17,6 @@
             <p class="text-sm">{{ authStore.user.email }}</p>
           </div>
           <!-- edit btn -->
-          <div class="w-[100px] h-[40px]">
-            <button
-              class="w-full h-full shadow-lg rounded-xl bg-[#ff9f93] text-white font-semibold"
-              @click="editProfile = true"
-            >
-              Chỉnh sửa
-            </button>
-          </div>
           <div class="w-[100px] h-[40px] ml-auto">
             <button
               class="w-full h-full shadow-lg rounded-xl bg-[#1e90ff] text-white font-semibold"
