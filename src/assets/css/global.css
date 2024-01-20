@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Roboto:wght@300;400;500;700;900&display=swap');
 :root {
   --bg-pri: #f8f9fa;
   --tw-gradient-from: #7928ca;
@@ -12,6 +13,7 @@ body {
 	font-size: .875rem;
 	font-weight: 400;
   color: #344767;
+  font-family: 'Roboto', sans-serif;
 }
 .fadeIn {
   animation: fadeIn 0.2s ease-in-out;

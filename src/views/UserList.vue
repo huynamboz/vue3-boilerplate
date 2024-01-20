@@ -43,12 +43,13 @@
           <td>
             <div class="flex gap-2">
               <p>{{ formatPrice(user.balance) }}</p>
-              <p class="text-[#fc5144]" @click.stop="openChangeBalance(user)">Nạp tiền</p>
+              <p class="text-[#308a46]" @click.stop="openChangeBalance(user, 'add')">Nạp</p> |
+              <p class="text-[#fc5144]" @click.stop="openChangeBalance(user, 'sub')">Trừ</p>
             </div>
           </td>
           <td>
             <div class="flex gap-2 font-semibold">
-              <p class="text-[#00b14d]" @click.stop="">Xóa</p>
+              <p class="text-[#00b14d]" @click.stop="onDeleteUser(user.id)">Xóa</p>
             </div>
           </td>
         </tr>
@@ -61,9 +62,10 @@
     @close="closePopupDetailUser"
     @updateUser="updateUser"
   />
-  <PopupNapTien
+  <PopupTopUp
     v-if="modal.PopupChangeBalance"
     :user="userChoosed"
+    :type="typeChangeBalance"
     @update="updateUserBalance"
     @close="closeChangeBalance"
   />
@@ -71,9 +73,9 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
 import PopupDetailUser from '@/components/Users/PopupDetailUser.vue'
-import { getUsersApi, updateUserApi } from '@/services/user.service'
+import { getUsersApi, updateUserApi, deleteUserApi } from '@/services/user.service'
 import { useNotification } from '@kyvg/vue3-notification'
-import PopupNapTien from '@/components/UI/Card/PopupNapTien.vue'
+import PopupTopUp from '@/components/UI/Card/PopupTopUp.vue'
 import { formatPrice } from '@/utils/formatPrice'
 const notification = useNotification()
 
@@ -101,9 +103,12 @@ const closeChangeBalance = () => {
   modal.value.PopupChangeBalance = false
   userChoosed.value = null
 }
-const openChangeBalance = (user) => {
+
+const typeChangeBalance = ref('add')
+const openChangeBalance = (user, type) => {
   modal.value.PopupChangeBalance = true
   userChoosed.value = user
+  typeChangeBalance.value = type
 }
 const fetchUsers = async () => {
   try {
@@ -152,6 +157,29 @@ const updateUser = async (user) => {
     })
   userChoosed.value = null
 }
+const onDeleteUser = async (id) => {
+  if (confirm('Bạn có chắc chắn muốn xóa user này?')) {
+    await deleteUserApi(id)
+      .then((res) => {
+        users.value = users.value.filter((item) => item.id != id)
+        notification.notify({
+          type: 'success',
+          title: 'Xóa user thành công',
+          text: 'Xóa user thành công',
+        })
+      })
+      .catch((error) => {
+        if (error.code == 'ERR_BAD_REQUEST') {
+          notification.notify({
+            type: 'error',
+            title: 'Xóa user lỗi',
+            text: error.response.data.message,
+          })
+        }
+      })
+  }
+}
+
 </script>
 <style scoped>
 table {

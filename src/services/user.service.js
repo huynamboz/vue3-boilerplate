@@ -8,8 +8,8 @@ export const updateUserApi = async (id, data) => {
   delete data.balance
   return await axiosApiInstance.patch(`/users/${id}`, data)
 }
-export const changeBalance = async (userID, balance) => {
-  return await axiosApiInstance.patch(`/users/${userID}/change-balance`, { balance: balance })
+export const changeBalance = async (userID, balance, type) => {
+  return await axiosApiInstance.patch(`/users/${userID}/change-balance`, { balance, type })
 }
 
 export const getListInformationsApi = async () => {
@@ -18,4 +18,8 @@ export const getListInformationsApi = async () => {
 
 export const sendInformationApi = async (data) => {
   return await axiosApiInstance.post('/informations', data)
+}
+
+export const deleteUserApi = async (id) => {
+  return await axiosApiInstance.delete(`/users/${id}`)
 }

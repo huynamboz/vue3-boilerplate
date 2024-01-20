@@ -10,7 +10,7 @@ import authLayout from '@/layouts/authLayout.vue'
 import emptyLayout from '@/layouts/emptyLayout.vue'
 import Vue3Toasity from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
-
+import 'remixicon/fonts/remixicon.css'
 const initApp = async () => {
   authMiddleware()
   await initAuthStore()
